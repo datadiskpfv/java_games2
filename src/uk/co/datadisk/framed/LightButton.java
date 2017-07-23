@@ -37,7 +37,8 @@ public class LightButton extends JButton {
 
     public boolean isLit() {
         Color color = getBackground();
-        boolean isLit = color.equals("red");
+        System.out.println("COLOR: " + color);
+        boolean isLit = color.equals(color.RED);
         return isLit;
     }
 
