@@ -3,6 +3,7 @@ package uk.co.datadisk.wizardofyesno;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import uk.co.datadisk.mycomponents.*;
 
 /**
  * Created by vallep on 16/07/2017.
@@ -27,6 +28,9 @@ public class WizardOfYesNo extends JFrame {
             "It is very doubtful"};
 
     private WizardOfYesNo() {
+        TitleLabel titleLabel = new TitleLabel("Wizard Yes/No");
+        add(titleLabel, BorderLayout.PAGE_START);
+
         Random rand = new Random();
         int numberOfAnswers = ANSWER.length;
         int pick = rand.nextInt(numberOfAnswers);
@@ -38,8 +42,24 @@ public class WizardOfYesNo extends JFrame {
         Font font = new Font(Font.SERIF, Font.BOLD + Font.ITALIC, 28);
         label.setFont(font);
         label.setHorizontalAlignment(JLabel.CENTER);
+        label.setOpaque(true);
+        if( pick > 5 ) {
+            label.setBackground(Color.RED);
+        } else {
+            label.setBackground(Color.GREEN);
+        }
 
-        add(label);
+        add(label, BorderLayout.CENTER);
+
+        String disclaimer = "This is only a suggestion. Use your own good judgement. The Wizard of Yes/No is not responsible for the consequences of your decisions.";
+        JTextArea disclaimerTextArea = new JTextArea(disclaimer);
+        disclaimerTextArea.setEditable(false);
+        disclaimerTextArea.setLineWrap(true);
+        disclaimerTextArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(disclaimerTextArea);
+        Dimension size = new Dimension(0, 50);
+        scrollPane.setPreferredSize(size);
+        add(scrollPane, BorderLayout.PAGE_END);
 
         setTitle("Wizard of Yes/No");
         setResizable(false);
