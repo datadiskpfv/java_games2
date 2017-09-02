@@ -66,6 +66,7 @@ public class TerrainButton extends JButton {
             setBackground(null);
             setText("");
         }
+        setFocusPainted(false);
     }
 
     public void reset() {
@@ -74,6 +75,5 @@ public class TerrainButton extends JButton {
         nextToHoles = 0;
         setText("");
         setBackground(null);
-
     }
 }
