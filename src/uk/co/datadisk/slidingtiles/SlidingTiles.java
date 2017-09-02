@@ -4,13 +4,21 @@ import uk.co.datadisk.mycomponents.TitleLabel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class SlidingTiles extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private static final int GRIDSIZE = 4;
+    private static final String FILENAME = "slidingTilesImage.jpg";
+
+    private int tileSize = 50;
+    private int gridSize = 4;
+
+    private BufferedImage image = null;
 
     private SlidingTiles() {
+        TileButton.setTileSizeAndMaxTiles(gridSize, gridSize);
         initGUI();
         setTitle("Sliding Tiles");
         setResizable(false);
