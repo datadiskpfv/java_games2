@@ -21,9 +21,9 @@ public class TileButton extends JButton {
         this.col = col;
         setImage(imageIcon, imageId);
 
-        setBackground(Color.BLACK);
+        setBackground(Color.WHITE);
         setBorder(null);
-        Dimension size = new Dimension(row, col);
+        Dimension size = new Dimension(tileSize, tileSize);
         setPreferredSize(size);
         setFocusPainted(false);
     }
