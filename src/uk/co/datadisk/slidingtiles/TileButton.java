@@ -59,4 +59,24 @@ public class TileButton extends JButton {
         tileSize = size;
         maxTiles = max;
     }
+
+    public boolean hasNoImage() {
+        boolean hasNoImage = false;
+        if(getIcon() == null) {
+            hasNoImage = true;
+        }
+
+        return hasNoImage;
+    }
+
+    public void swap(TileButton otherTile) {
+        ImageIcon otherImageIcon = otherTile.getImage();
+        int otherImageId = otherTile.getImageId();
+        otherTile.setImage(imageIcon, imageId);
+        setImage(otherImageIcon, otherImageId);
+    }
+
+    public void showImage() {
+        setIcon(imageIcon);
+    }
 }
