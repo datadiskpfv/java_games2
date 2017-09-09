@@ -25,6 +25,10 @@ public class MazeGenerator extends JFrame {
 
     private void initGUI() {
         add(titleLabel, BorderLayout.PAGE_START);
+
+        Cell cell = new Cell();
+        add(cell, BorderLayout.CENTER);
+
     }
 
     public static void main(String[] args) {
