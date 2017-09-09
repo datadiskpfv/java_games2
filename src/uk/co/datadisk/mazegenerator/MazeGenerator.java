@@ -9,6 +9,11 @@ public class MazeGenerator extends JFrame {
 
     private static final long serialVersionUID = 5501197773139684949L;
 
+    private int rows = 5;
+    private int cols = 5;
+
+    private Cell[][] cell = new Cell[rows][cols];
+
     TitleLabel titleLabel = new TitleLabel("Maze");
 
     public MazeGenerator() {
