@@ -69,6 +69,7 @@ public class MazeGenerator extends JFrame {
         col = nextCol;
         cell[row][col].setCurrent(true);
         cell[row][col].addPath(secondDirection);
+        System.out.println("Current: " + row + "," + col);
 
     }
 
@@ -103,7 +104,7 @@ public class MazeGenerator extends JFrame {
 
     private void newMaze() {
         mazePanel.setLayout(new GridLayout(rows, cols));
-        cell = new Cell[rows][cols];
+        //cell = new Cell[rows][cols];
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -131,8 +132,12 @@ public class MazeGenerator extends JFrame {
         int r = rand.nextInt(rows);
         int c = rand.nextInt(cols);
 
+
+
         // while not all cells have yet been visited
         while(visitedCells < totalCells) {
+            System.out.println("Row: " + r + "  Col: " + c);
+
             // find all neighbours with all walls intact
             ArrayList<Cell> neighbours = new ArrayList<>();
             if (isAvailable(r - 1, c)) {
@@ -152,6 +157,7 @@ public class MazeGenerator extends JFrame {
                 // if more than one found, add this
                 // cell to the list to try again
                 if (neighbours.size() >  1) {
+                    System.out.println("neightbours greater than 1");
                     tryLaterCell.add(cell[r][c]);
                 }
                 // pick neighbour and remove the wall
@@ -163,6 +169,7 @@ public class MazeGenerator extends JFrame {
                 r = neighbour.getRow();
                 c = neighbour.getCol();
                 visitedCells++;
+                System.out.println("visitedCells: " + visitedCells);
             } else {
                 // if none was found, go to one of the
                 // cells that was saved to try later

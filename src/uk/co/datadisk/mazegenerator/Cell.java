@@ -2,7 +2,6 @@ package uk.co.datadisk.mazegenerator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 
 public class Cell extends JPanel {
 
