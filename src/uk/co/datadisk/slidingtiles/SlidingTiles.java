@@ -52,6 +52,22 @@ public class SlidingTiles extends JFrame {
     }
 
     private void initGUI() {
+
+        // menu bar
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu fileMenu = new JMenu("File");
+        menuBar.add(fileMenu);
+        JMenuItem openMenuItem = new JMenuItem("Open");
+        openMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                open();
+            }
+        });
+        fileMenu.add(openMenuItem);
+
+        // title
         TitleLabel titleLabel = new TitleLabel("Sliding Tiles");
         add(titleLabel, BorderLayout.PAGE_START);
 
@@ -71,6 +87,23 @@ public class SlidingTiles extends JFrame {
             }
         });
         buttonPanel.add(scrambleButton);
+    }
+
+    private void open() {
+        JFileChooser chooser = new JFileChooser();
+        ImageFileFilter fileFilter = new ImageFileFilter();
+        chooser.setFileFilter(fileFilter);
+        int option = chooser.showOpenDialog(this);
+        if( option == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            try {
+                image = ImageIO.read(file);
+                divideImage();
+            } catch (IOException e ) {
+                String message = "File could not be opened";
+                JOptionPane.showMessageDialog(this, message);
+            }
+        }
     }
 
     private void newGame() {

@@ -73,10 +73,12 @@ public class Cell extends JPanel {
         g.setColor(Color.BLACK);
 
         // draw the walls
+        // if(!isWall(TOP)) {    use this line instead of below for anti-maze
         if(isWall(TOP)) {
             g.drawLine(0,0, SIZE, 0);
         }
 
+        // if(!isWall(LEFT)) {    use this line instead of below for anti-maze
         if(isWall(LEFT)) {
             g.drawLine(0,0, 0, SIZE);
         }

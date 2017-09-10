@@ -4,6 +4,8 @@ import uk.co.datadisk.mycomponents.TitleLabel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -13,8 +15,8 @@ public class MazeGenerator extends JFrame {
 
     private static final long serialVersionUID = 5501197773139684949L;
 
-    private int rows = 5;
-    private int cols = 5;
+    private int rows = 30;
+    private int cols = 20;
 
     private int row = 0;
     private int col = 0;
@@ -51,6 +53,19 @@ public class MazeGenerator extends JFrame {
         centerPanel.add(mazePanel);
 
         // button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.BLACK);
+        add(buttonPanel, BorderLayout.PAGE_END);
+
+        JButton newMazeButton = new JButton("New Maze");
+        newMazeButton.setFocusable(false);
+        newMazeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newMaze();
+            }
+        });
+        buttonPanel.add(newMazeButton);
 
         // listeners
         addKeyListener(new KeyAdapter() {
@@ -79,30 +94,52 @@ public class MazeGenerator extends JFrame {
                 // move up if this cell does not have a top wall
                 if(!cell[row][col].isWall(Cell.TOP)) {
                     moveTo(row-1, col, Cell.TOP, Cell.BOTTOM);
+                    // move up more if this is a long column
+                    while(!cell[row][col].isWall(Cell.TOP) && cell[row][col].isWall(Cell.LEFT) && cell[row][col].isWall(Cell.RIGHT)) {
+                        moveTo(row-1, col, Cell.TOP, Cell.BOTTOM);
+                    }
                 }
                 break;
             case KeyEvent.VK_DOWN:
                 // move up if this cell does not have a top wall
                 if(!cell[row][col].isWall(Cell.BOTTOM)) {
                     moveTo(row+1, col, Cell.BOTTOM, Cell.TOP);
+                    // move up more if this is a long column
+                    while(!cell[row][col].isWall(Cell.BOTTOM) && cell[row][col].isWall(Cell.LEFT) && cell[row][col].isWall(Cell.RIGHT)) {
+                        moveTo(row+1, col, Cell.BOTTOM, Cell.TOP);
+                    }
                 }
                 break;
             case KeyEvent.VK_LEFT:
                 // move up if this cell does not have a top wall
                 if(!cell[row][col].isWall(Cell.LEFT)) {
                     moveTo(row, col-1, Cell.LEFT, Cell.RIGHT);
+                    // move up more if this is a long column
+                    while(!cell[row][col].isWall(Cell.LEFT) && cell[row][col].isWall(Cell.BOTTOM) && cell[row][col].isWall(Cell.TOP)) {
+                        moveTo(row, col-1, Cell.LEFT, Cell.RIGHT);
+                    }
                 }
                 break;
             case KeyEvent.VK_RIGHT:
                 // move up if this cell does not have a top wall
                 if(!cell[row][col].isWall(Cell.RIGHT)) {
                     moveTo(row, col+1, Cell.RIGHT, Cell.LEFT);
+                    // move up more if this is a long column
+                    while(!cell[row][col].isWall(Cell.RIGHT) && cell[row][col].isWall(Cell.BOTTOM) && cell[row][col].isWall(Cell.TOP)) {
+                        moveTo(row, col+1, Cell.RIGHT, Cell.LEFT);
+                    }
                 }
                 break;
+        }
+        // puzzle solved
+        if (row == endRow && col == endCol) {
+            String message = "Congratulations you have won!!!!!";
+            JOptionPane.showMessageDialog(this, message);
         }
     }
 
     private void newMaze() {
+        mazePanel.removeAll();
         mazePanel.setLayout(new GridLayout(rows, cols));
         //cell = new Cell[rows][cols];
 
@@ -120,6 +157,7 @@ public class MazeGenerator extends JFrame {
         endCol = cols-1;
         cell[row][col].setCurrent(true);
         cell[endRow][endCol].setEnd(true);
+        mazePanel.revalidate();
     }
 
     private void generateMaze() {
