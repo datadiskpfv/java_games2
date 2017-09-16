@@ -18,6 +18,8 @@ public class SlidingTiles extends JFrame {
 
     private static final String FILENAME = "slidingTilesImage.jpg";
 
+    private static final int IMAGESIZE = 200;
+
     private static final int UP    = 0;
     private static final int DOWN  = 1;
     private static final int LEFT  = 2;
@@ -67,6 +69,36 @@ public class SlidingTiles extends JFrame {
         });
         fileMenu.add(openMenuItem);
 
+        JMenu sizeMenu = new JMenu("Size");
+        menuBar.add(sizeMenu);
+
+        JMenuItem size3MenuItem = new JMenuItem("3 x 3");
+        size3MenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setGridSize(3);
+            }
+        });
+        sizeMenu.add(size3MenuItem);
+
+        JMenuItem size4MenuItem = new JMenuItem("4 x 4");
+        size4MenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setGridSize(4);
+            }
+        });
+        sizeMenu.add(size4MenuItem);
+
+        JMenuItem size5MenuItem = new JMenuItem("5 x 5");
+        size5MenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setGridSize(5);
+            }
+        });
+        sizeMenu.add(size5MenuItem);
+
         // title
         TitleLabel titleLabel = new TitleLabel("Sliding Tiles");
         add(titleLabel, BorderLayout.PAGE_START);
@@ -89,6 +121,15 @@ public class SlidingTiles extends JFrame {
         buttonPanel.add(scrambleButton);
     }
 
+    private void setGridSize(int size) {
+        gridSize = size;
+        tileSize = IMAGESIZE / gridSize;
+        TileButton.setTileSizeAndMaxTiles(tileSize, gridSize*gridSize);
+        tile = new TileButton[gridSize][gridSize];
+        divideImage();
+        pack();
+    }
+
     private void open() {
         JFileChooser chooser = new JFileChooser();
         ImageFileFilter fileFilter = new ImageFileFilter();
@@ -97,7 +138,25 @@ public class SlidingTiles extends JFrame {
         if( option == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             try {
-                image = ImageIO.read(file);
+                BufferedImage newImage = ImageIO.read(file);
+                int width = newImage.getWidth();
+                int height = newImage.getHeight();
+                if (width < height) {
+                    height = width;
+                } else {
+                    width = height;
+                }
+                Graphics g = image.getGraphics();
+
+                // drawImage parameters
+                //      new image           - the new image obtained from the file chooser
+                //      x,y                 - where you want the image drawn on g (in our case 0,0)
+                //      height, width       - the height and width on g (in our case 200 x 200)
+                //      x, y copying from   - the x, y coordinates of the image you are copying from
+                //      width, height       - the width and height you are copying from
+                //      imageObserver       - the imageObserver
+                g.drawImage(newImage,0, 0, IMAGESIZE, IMAGESIZE, 0, 0, width, height, this);
+                g.dispose();
                 divideImage();
             } catch (IOException e ) {
                 String message = "File could not be opened";
