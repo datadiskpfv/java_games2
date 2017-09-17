@@ -60,7 +60,7 @@ public class Die extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-        System.out.println("Running die paintComponent");
+        //System.out.println("Running die paintComponent");
         // fill the background
         switch (state) {
             case AVAILABLE:
