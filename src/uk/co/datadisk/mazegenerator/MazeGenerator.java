@@ -15,6 +15,10 @@ public class MazeGenerator extends JFrame {
 
     private static final long serialVersionUID = 5501197773139684949L;
 
+    public static int TYPE_MAZE = 0;
+    public static int TYPE_ANTIMAZE = 1;
+    private int type = TYPE_MAZE;
+
     private int rows = 30;
     private int cols = 20;
 
@@ -67,6 +71,16 @@ public class MazeGenerator extends JFrame {
         });
         buttonPanel.add(newMazeButton);
 
+        JButton optionsButton = new JButton("Options");
+        newMazeButton.setFocusable(false);
+        optionsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeOptions();
+            }
+        });
+        buttonPanel.add(optionsButton);
+
         // listeners
         addKeyListener(new KeyAdapter() {
             @Override
@@ -75,6 +89,14 @@ public class MazeGenerator extends JFrame {
                moveBall(keyCode);
             }
         });
+    }
+
+    private void changeOptions() {
+        OptionsDialog dialog = new OptionsDialog(rows, cols, type);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
     private void moveTo(int nextRow, int nextCol, int firstDirection, int secondDirection) {
@@ -139,13 +161,18 @@ public class MazeGenerator extends JFrame {
     }
 
     private void newMaze() {
+        if (type == TYPE_MAZE) {
+            titleLabel.setText("Maze");
+        } else {
+            titleLabel.setText("Anti-Maze");
+        }
         mazePanel.removeAll();
         mazePanel.setLayout(new GridLayout(rows, cols));
         //cell = new Cell[rows][cols];
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                cell[r][c] = new Cell(r, c);
+                cell[r][c] = new Cell(r, c, type);
                 mazePanel.add(cell[r][c]);
             }
         }
@@ -169,8 +196,6 @@ public class MazeGenerator extends JFrame {
         Random rand = new Random();
         int r = rand.nextInt(rows);
         int c = rand.nextInt(cols);
-
-
 
         // while not all cells have yet been visited
         while(visitedCells < totalCells) {
