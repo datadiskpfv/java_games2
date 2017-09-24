@@ -93,10 +93,19 @@ public class MazeGenerator extends JFrame {
 
     private void changeOptions() {
         OptionsDialog dialog = new OptionsDialog(rows, cols, type);
+        dialog.setModal(true);
         dialog.setResizable(false);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
+
+        if (!dialog.isCanceled()) {
+            rows = dialog.getRows();
+            cols = dialog.getCols();
+            type = dialog.getMazeType();
+
+            newMaze();
+        }
     }
 
     private void moveTo(int nextRow, int nextCol, int firstDirection, int secondDirection) {
@@ -185,6 +194,7 @@ public class MazeGenerator extends JFrame {
         cell[row][col].setCurrent(true);
         cell[endRow][endCol].setEnd(true);
         mazePanel.revalidate();
+        pack();
     }
 
     private void generateMaze() {
