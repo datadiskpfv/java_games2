@@ -15,8 +15,10 @@ public class Dictionary {
 
     public Dictionary() {
         for (int i = 0; i < 26; i++) {
-            wordList[1] = new ArrayList<String>();
+            wordList[i] = new ArrayList<String>();
         }
+
+        System.out.println("WordList " + wordList[1]);
 
         try {
             BufferedReader in = new BufferedReader(new FileReader(new File(FILENAME)));
@@ -46,9 +48,24 @@ public class Dictionary {
         int list = ALPHABET.indexOf(letter);
         int index = 0;
         String word2 = "";
+        while (index < wordList[list].size() && word2.compareTo(word) < 0 && !found) {
+            word2 = wordList[list].get(index);
+            if ( word2.equals(word) ) {
+                found = true;
+            }
+            index++;
+        }
         return found;
     }
 
     public static void main(String[] args) {
+        Dictionary dictionary = new Dictionary();
+        String word = "apple";
+
+        if(dictionary.isAWord(word)) {
+            System.out.println(word + " is a word");
+        } else {
+            System.out.println(word + " is not a word");
+        }
     }
 }
