@@ -21,7 +21,7 @@ public class LetterPanel extends JPanel {
     private int size = 40;
 
     private Font smallFont = new Font(Font.DIALOG, Font.BOLD, 12);
-    private Font largeFont = new Font(Font.DIALOG, Font.BOLD, 30);
+    private Font bigFont = new Font(Font.DIALOG, Font.BOLD, 30);
 
     public LetterPanel(String letter, int points) {
         this.letter = letter;
@@ -58,6 +58,21 @@ public class LetterPanel extends JPanel {
             }
             g.setColor(Color.BLACK);
             g.drawRect(0,0, size-1, size-1);
+
+            g.setFont(bigFont);
+            int x = 5;
+            int y = size * 3 / 4;
+            g.drawString(letter, x, y);
+
+            g.setFont(smallFont);
+            x = size - 12;
+            y = size * 17 / 20;
+            g.drawString("" + points, x, y);
         }
+    }
+
+    public Dimension getPreferredSize() {
+        Dimension dimension = new Dimension(size, size);
+        return dimension;
     }
 }
