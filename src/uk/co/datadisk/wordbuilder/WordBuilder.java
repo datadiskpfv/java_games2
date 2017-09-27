@@ -9,7 +9,14 @@ public class WordBuilder extends JFrame {
 
     private static final long serialVersionUID = 582437348539667314L;
 
+    private static final int ROWS = 8;
+    private static final int COLS = 12;
+    private static final int MAX = 15;
+
+    private LetterPanel board[][] = new LetterPanel[ROWS][COLS];
+
     private JPanel mainPanel = new JPanel();
+    private JPanel boardPanel = new JPanel();
 
     public WordBuilder() {
         initGUI();
@@ -27,8 +34,7 @@ public class WordBuilder extends JFrame {
 
         // main panel
         add(mainPanel, BorderLayout.CENTER);
-        LetterPanel letterPanel = new LetterPanel("A", 1);
-        mainPanel.add(letterPanel);
+
 
         // score panel
 
@@ -37,7 +43,17 @@ public class WordBuilder extends JFrame {
 
 
         // board panel
-
+        boardPanel.setBackground(Color.BLACK);
+        boardPanel.setLayout(new GridLayout(ROWS, COLS));
+        mainPanel.add(boardPanel);
+        BagOfLetters letters = new BagOfLetters();
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                LetterPanel letterPanel = letters.pickALetter();
+                board[i][j] = letterPanel;
+                boardPanel.add(letterPanel);
+            }
+        }
 
         // button panel
 
