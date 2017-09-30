@@ -12,6 +12,7 @@
       <entry name="!?*.clj" />
       <entry name="!?*.aj" />
       <entry name="!?*.txt" />
+      <entry name="!?/*.gif" />
     </wildcardResourcePatterns>
   </component>
 </project>
