@@ -1,5 +1,6 @@
 package uk.co.datadisk.imageresizer;
 
+import jdk.nashorn.internal.scripts.JO;
 import uk.co.datadisk.mycomponents.TitleLabel;
 
 import javax.imageio.ImageIO;
@@ -119,6 +120,10 @@ public class ImageResizer extends JFrame {
             public void focusLost(FocusEvent e) {
                 changedScaleW();
             }
+            public void focusGained(FocusEvent e) {
+                JTextField field = (JTextField) e.getSource();
+                field.selectAll();
+            }
         });
         toolBar.add(scaleWField);
 
@@ -129,6 +134,10 @@ public class ImageResizer extends JFrame {
             public void focusLost(FocusEvent e) {
                 changedScaleH();
             }
+            public void focusGained(FocusEvent e) {
+                JTextField field = (JTextField) e.getSource();
+                field.selectAll();
+            }
         });
         toolBar.add(scaleHField);
         toolBar.addSeparator();
@@ -136,28 +145,163 @@ public class ImageResizer extends JFrame {
         // crop options
         JButton cropButton = new JButton(cropIcon);
         cropButton.setToolTipText("Crop Image");
+        cropButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                crop();
+            }
+        });
         toolBar.add(cropButton);
 
         JLabel cropXLabel = new JLabel(xIcon);
         toolBar.add(cropXLabel);
+        cropXField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                changedCropX();
+            }
+            public void focusGained(FocusEvent e) {
+                JTextField field = (JTextField) e.getSource();
+                field.selectAll();
+            }
+        });
         toolBar.add(cropXField);
 
         JLabel cropYLabel = new JLabel(yIcon);
         toolBar.add(cropYLabel);
+        cropYField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                changedCropY();
+            }
+            public void focusGained(FocusEvent e) {
+                JTextField field = (JTextField) e.getSource();
+                field.selectAll();
+            }
+        });
         toolBar.add(cropYField);
 
         JLabel cropWLabel = new JLabel(widthIcon);
         toolBar.add(cropWLabel);
+        cropWField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                changedCropW();
+            }
+            public void focusGained(FocusEvent e) {
+                JTextField field = (JTextField) e.getSource();
+                field.selectAll();
+            }
+        });
         toolBar.add(cropWField);
 
         JLabel cropHLabel = new JLabel(heightIcon);
         toolBar.add(cropHLabel);
+        cropHField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                changedCropH();
+            }
+            public void focusGained(FocusEvent e) {
+                JTextField field = (JTextField) e.getSource();
+                field.selectAll();
+            }
+        });
         toolBar.add(cropHField);
 
         // image panel
 
         JScrollPane scrollPane = new JScrollPane(imagePanel);
         mainPanel.add(scrollPane);
+
+
+    }
+
+    private void crop() {
+        try {
+            String s = cropXField.getText();
+            int cropX = Integer.parseInt(s);
+
+            s = cropYField.getText();
+            int cropY = Integer.parseInt(s);
+
+            s = cropWField.getText();
+            int cropW = Integer.parseInt(s);
+
+            s = cropHField.getText();
+            int cropH = Integer.parseInt(s);
+
+            BufferedImage image = imagePanel.getImage();
+            BufferedImage croppedImage = image.getSubimage(cropX, cropY, cropW, cropH);
+            imagePanel.setImage(croppedImage);
+
+            setScaleFields(cropW, cropH);
+            setCropFields(0,0,0,0);
+            imagePanel.resetCrop();
+        } catch (Exception e) {
+            String message = "Image could not be cropped.";
+            JOptionPane.showMessageDialog(this, message);
+        }
+
+    }
+
+    public void setCropFields(int cropX, int cropY, int cropW, int cropH) {
+        cropXField.setText(""+cropX);
+        cropYField.setText(""+cropY);
+        cropWField.setText(""+cropW);
+        cropHField.setText(""+cropH);
+    }
+
+    private void changedCropX() {
+        String s = cropXField.getText();
+        if (isValid(s,0)) {
+            int cropX = Integer.parseInt(s);
+            imagePanel.setCropX(cropX);
+        }
+        else {
+            String message =  s + " is not a valid value.";
+            JOptionPane.showMessageDialog(this, message);
+            cropXField.requestFocus();
+        }
+    }
+
+    private void changedCropY() {
+        String s = cropYField.getText();
+        if (isValid(s,0)) {
+            int cropY = Integer.parseInt(s);
+            imagePanel.setCropY(cropY);
+        }
+        else {
+            String message =  s + " is not a valid value.";
+            JOptionPane.showMessageDialog(this, message);
+            cropYField.requestFocus();
+        }
+    }
+
+    private void changedCropW() {
+        String s = cropWField.getText();
+        if (isValid(s,0)) {
+            int cropW = Integer.parseInt(s);
+            imagePanel.setCropW(cropW);
+        }
+        else {
+            String message =  s + " is not a valid value.";
+            JOptionPane.showMessageDialog(this, message);
+            cropWField.requestFocus();
+        }
+    }
+
+    private void changedCropH() {
+        String s = cropHField.getText();
+        if (isValid(s,0)) {
+            int cropH = Integer.parseInt(s);
+            imagePanel.setCropH(cropH);
+        }
+        else {
+            String message =  s + " is not a valid value.";
+            JOptionPane.showMessageDialog(this, message);
+            cropHField.requestFocus();
+        }
     }
 
     private void changedScaleH() {
