@@ -21,7 +21,13 @@ public class Dictionary {
         System.out.println("WordList " + wordList[1]);
 
         try {
-            BufferedReader in = new BufferedReader(new FileReader(new File(FILENAME)));
+            InputStream input = getClass().getResourceAsStream(FILENAME);
+
+            if (input == null){
+                System.out.println("in is null");
+            }
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            //BufferedReader in = new BufferedReader(new FileReader(new File(FILENAME)));
             String word = in.readLine();
             while (word != null) {
                 char letter = word.charAt(0);

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class LetterPanel extends JPanel {
 
@@ -41,7 +42,9 @@ public class LetterPanel extends JPanel {
     private void initPanel() {
         if ( image == null ) {
             try {
-                image = ImageIO.read(new File(IMAGENAME));
+                InputStream input = getClass().getResourceAsStream(IMAGENAME);
+                image = ImageIO.read(input);
+                //image = ImageIO.read(new File(IMAGENAME));
             } catch (IOException e) {
                 String message = IMAGENAME + " could not be opened";
                 JOptionPane.showMessageDialog(null, message);
@@ -111,6 +114,10 @@ public class LetterPanel extends JPanel {
         repaint();
     }
 
+    public boolean isEmpty() {
+        return (points == -1);
+    }
+
     public boolean hasNoLetter() {
         return (points == -1);
     }
@@ -120,5 +127,17 @@ public class LetterPanel extends JPanel {
         points = letterPanel2.getPoints();
         column = letterPanel2.getColumn();
         repaint();
+    }
+
+    public void resize(int size) {
+        this.size = size;
+
+        bigFont = new Font(Font.DIALOG, Font.BOLD, size*3/4);
+        smallFont = new Font(Font.DIALOG, Font.BOLD, size*3/10);
+        bigFM = getFontMetrics(bigFont);
+        smallFM = getFontMetrics(smallFont);
+
+        repaint();
+        revalidate();
     }
 }
