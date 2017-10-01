@@ -40,7 +40,7 @@ public class Deck {
                     int y = suit * CARDHEIGHT;
                     Image image = cardsImage.getSubimage(x, y, CARDWIDTH, CARDHEIGHT);
                     Card card = new Card(RANKS[rank], suit, VALUES[rank], image);
-                    cards.add(pos,card);
+                    cards.add(pos, card);
                 }
             }
 
@@ -67,10 +67,24 @@ public class Deck {
     }
 
     public Card deal() {
-        return cards.remove(0);
+        Card card = cards.remove(0);
+        return card;
     }
 
     public int size() {
         return cards.size();
+    }
+
+    public Card get(int index){
+        Card card = cards.get(index);
+        return card;
+    }
+
+    public void copyFrom(Deck deck){
+        cards.clear();
+        for (int i = 0; i < deck.size(); i++) {
+            Card card = deck.get(i);
+            cards.add(card);
+        }
     }
 }

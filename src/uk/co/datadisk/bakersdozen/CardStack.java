@@ -18,7 +18,7 @@ public class CardStack {
 
     public void add(Card card) {
         int cardx = stackX;
-        int cardy = (overlap * cards.size() + stackY);
+        int cardy = stackY+overlap*cards.size();
         card.setXY(cardx, cardy);
         cards.add(card);
     }
@@ -60,5 +60,15 @@ public class CardStack {
 
     public void clear() {
         cards.clear();
+    }
+
+    public Card getLast() {
+        int index = cards.size() -1;
+        return cards.get(index);
+    }
+
+    public void removeLast() {
+        int index = cards.size()-1;
+        cards.remove(index);
     }
 }

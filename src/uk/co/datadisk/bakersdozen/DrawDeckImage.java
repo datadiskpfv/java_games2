@@ -40,14 +40,14 @@ public class DrawDeckImage {
 
                 String rank = ranks[col];
                 int rankWidth = fin.stringWidth(rank);
-                int fromLeft = x + (cardWidth/2) - (rankWidth/2);
+                int fromLeft = x + cardWidth/2 - rankWidth/2;
                 int fromTop = y + 20;
 
                 g.drawString(rank, fromLeft, fromTop);
 
                 String suit = suits[row];
                 int suitWidth = fin.stringWidth(suit);
-                fromLeft = x + (cardWidth/2) - (suitWidth/2);
+                fromLeft = x + cardWidth/2 - suitWidth/2;
                 fromTop = y + 45;
 
                 g.drawString(suit, fromLeft, fromTop);
