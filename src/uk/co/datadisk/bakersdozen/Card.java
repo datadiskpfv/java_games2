@@ -73,7 +73,12 @@ public class Card {
         boolean isNear = false;
         int offsetX = width/2;
         int offsetY = height;
-        if (pointX > x - offsetX && pointX < x - offsetX && pointY > y - offsetY && pointY < y + offsetY) {
+        System.out.println("calling isNear pointX" + pointX + " pointY" + pointY);
+        if (pointX > x - offsetX
+            && pointX < x - offsetX
+            && pointY > y - offsetY
+            && pointY < y + offsetY) {
+            System.out.println("isNear - true");
             isNear = true;
         }
         return isNear;

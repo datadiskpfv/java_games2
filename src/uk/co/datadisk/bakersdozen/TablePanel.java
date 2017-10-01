@@ -55,8 +55,6 @@ public class TablePanel extends JPanel {
 
         newGame();
 
-
-
         // mouse listeners
         addMouseListener(new MouseAdapter() {
             @Override
@@ -64,6 +62,12 @@ public class TablePanel extends JPanel {
                 int x = e.getX();
                 int y = e.getY();
                 clicked(x, y);
+            }
+
+            public void mouseReleased(MouseEvent e){
+                int x = e.getX();
+                int y = e.getX();
+                released(x, y);
             }
         });
 
@@ -73,21 +77,6 @@ public class TablePanel extends JPanel {
                 int x = e.getX();
                 int y = e.getY();
                 dragged(x,y);
-            }
-        });
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getX();
-                clicked(x, y);
-            }
-
-            public void mouseReleased(MouseEvent e){
-                int x = e.getX();
-                int y = e.getX();
-                released(x, y);
             }
         });
     }
@@ -107,17 +96,22 @@ public class TablePanel extends JPanel {
         if(movingCard!=null) {
             boolean validMove = false;
 
+            // play on foundation
             for (int i = 0; i < 4 && !validMove; i++) {
                 int foundationx = foundation[i].getX();
                 int foundationy = foundation[i].getY();
                 if(movingCard.isNear(foundationx,foundationy)){
+
+                    // empty foundation?
                     if(foundation[i].size() == 0){
                         if(movingCard.getValue() ==0){
                             validMove = true;
                             foundation[i].add(movingCard);
                             movingCard = null;
                         }
-                    } else {
+                    }
+                    // otherwise, valid suit and rank?
+                    else {
                         Card topCard = foundation[i].getLast();
                         if(movingCard.getSuit()==topCard.getSuit() && movingCard.getValue()==topCard.getValue()+1){
                             validMove = true;
@@ -129,10 +123,13 @@ public class TablePanel extends JPanel {
                 }
             }
 
+            // play on a column?
             for (int i = 0; i < 13 && !validMove; i++) {
                 if(column[i].size()>0){
                     Card card = column[i].getLast();
+                    //System.out.println("in play on column: " + movingCard.isNear(card));
                     if(movingCard.isNear(card) && movingCard.getValue() == card.getValue()-1){
+                        System.out.println("inside last if - play on column");
                         validMove = true;
                         column[i].add(movingCard);
                         movingCard = null;
@@ -140,6 +137,7 @@ public class TablePanel extends JPanel {
                 }
             }
 
+            // otherwise, return to column
             if(!validMove) {
                 column[fromCol].add(movingCard);
                 movingCard = null;
